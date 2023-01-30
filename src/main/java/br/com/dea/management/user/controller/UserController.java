@@ -23,7 +23,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public User getUserById(@PathVariable("id") Long id) {
-        return this.userService.findUserById(id);
+    public UserDto getUserById(@PathVariable("id") Long id) {
+        User user = this.userService.findUserById(id);
+        return UserDto.fromUser(user);
     }
 }

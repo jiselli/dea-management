@@ -35,4 +35,10 @@ public class StudentController {
         Page<StudentDto> students = studentsPaged.map(student -> StudentDto.fromStudent(student));
         return students;
     }
+
+    @RequestMapping(value = "/student/{id}", method = RequestMethod.GET)
+    public StudentDto getStudentById(@PathVariable("id") Long id) {
+        Student student = this.studentService.findStudentById(id);
+        return StudentDto.fromStudent(student);
+    }
 }

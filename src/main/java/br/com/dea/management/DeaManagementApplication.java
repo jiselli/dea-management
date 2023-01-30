@@ -1,6 +1,8 @@
 package br.com.dea.management;
 
+import br.com.dea.management.student.domain.Student;
 import br.com.dea.management.student.repository.StudentRepository;
+import br.com.dea.management.user.domain.User;
 import br.com.dea.management.user.repository.UserRepository;
 import br.com.dea.management.user.service.UserService;
 import jakarta.persistence.EntityManager;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class DeaManagementApplication implements CommandLineRunner {
