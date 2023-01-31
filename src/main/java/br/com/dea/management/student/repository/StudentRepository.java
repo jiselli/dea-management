@@ -14,7 +14,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Query("SELECT s FROM Student s")
     public Page<Student> findAllPaginated(Pageable pageable);
-
-    @Query("SELECT u FROM Student u WHERE id = :id")
-    public Optional<Student> findById(String id);
 }
