@@ -39,21 +39,27 @@ public class DeaManagementApplication implements CommandLineRunner {
 //		this.userRepository.deleteAll();
 //
 //		//Creating some students
-//		for (int i = 0; i < 100; i++) {
-//			User u = new User();
-//			u.setEmail("email " + i);
-//			u.setName("name " + i);
-//			u.setLinkedin("linkedin " + i);
-//			u.setPassword("pwd " + i);
-//
-//			Student student = new Student();
-//			student.setUniversity("UNI " + i);
-//			student.setGraduation("Grad " + i);
-//			student.setFinishDate(LocalDate.now());
-//			student.setUser(u);
-//
-//			this.studentRepository.save(student);
-//		}
+		for (int i = 0; i < 100; i++) {
+			User u = new User();
+			u.setEmail("email " + i);
+			u.setName("name " + i);
+			u.setLinkedin("linkedin " + i);
+			u.setPassword("pwd " + i);
+
+//			Student student = Student.builder()
+//					.university("UNI " + i)
+//					.graduation("Grad " + i)
+//					.finishDate(LocalDate.now())
+//					.user(u)
+//					.build();
+			Student student = new Student();
+			student.setUniversity("UNI " + i);
+			student.setGraduation("Grad " + i);
+			student.setFinishDate(LocalDate.now());
+			student.setUser(u);
+
+			this.studentRepository.save(student);
+		}
 //
 //
 //		//Loading all Users

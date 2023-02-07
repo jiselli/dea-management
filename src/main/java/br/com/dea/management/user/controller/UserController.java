@@ -3,11 +3,13 @@ package br.com.dea.management.user.controller;
 import br.com.dea.management.user.domain.User;
 import br.com.dea.management.user.dto.UserDto;
 import br.com.dea.management.user.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Slf4j
 public class UserController {
 
     @Autowired
