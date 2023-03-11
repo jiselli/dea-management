@@ -68,7 +68,7 @@ public class DeaManagementApplication implements CommandLineRunner {
 			student.setFinishDate(LocalDate.now());
 			student.setUser(u);
 
-			this.studentRepository.save(student);
+//			this.studentRepository.save(student);
 		}
 //
 //

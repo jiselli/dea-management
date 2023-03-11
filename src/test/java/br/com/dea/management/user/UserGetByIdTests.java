@@ -61,7 +61,6 @@ public class UserGetByIdTests {
                 .andExpect(jsonPath("$.name", is(user.getName())))
                 .andExpect(jsonPath("$.email", is(user.getEmail())))
                 .andExpect(jsonPath("$.linkedin", is(user.getLinkedin())));
-
     }
 
     @Test
@@ -96,5 +95,4 @@ public class UserGetByIdTests {
             this.userRepository.save(user);
         }
     }
-
 }
