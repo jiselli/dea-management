@@ -1,7 +1,5 @@
 package br.com.dea.management.employee;
 
-import br.com.dea.management.employee.EmployeeTestUtils;
-import br.com.dea.management.employee.EmployeeType;
 import br.com.dea.management.employee.domain.Employee;
 import br.com.dea.management.employee.repository.EmployeeRepository;
 import br.com.dea.management.position.domain.Position;
@@ -18,14 +16,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.nio.charset.Charset;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class EmployeeCreationSuccessCaseTests {
+class EmployeeUpdateSuccessCaseTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,19 +38,22 @@ class EmployeeCreationSuccessCaseTests {
             MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
     @Test
-    void whenRequestingEmployeeCreationWithAValidPayload_thenCreateAEmployeeSuccessfully() throws Exception {
+    void whenRequestingEmployeeUpdateWithAValidPayload_thenUpdateAEmployeeSuccessfully() throws Exception {
         this.employeeRepository.deleteAll();
-        Position position = this.employeeTestUtils.createFakePosition("Dev", "Pleno");
+        this.employeeTestUtils.createFakeEmployees(1);
+        Position position = this.employeeTestUtils.createFakePosition("Designer", "Junior");
+
+        Employee employeeBase = this.employeeRepository.findAll().get(0);
 
         String payload = "{" +
                 "\"name\": \"name\"," +
                 "\"email\": \"email@email.com\"," +
                 "\"linkedin\": \"linkedin\"," +
                 "\"employeeType\": \"DEVELOPER\"," +
-                "\"password\": \"password\"," +
-                "\"position\": " + position.getId() +
+                "\"position\": " + position.getId() + "," +
+                "\"password\": \"password\"" +
                 "}";
-        mockMvc.perform(post("/employee")
+        mockMvc.perform(put("/employee/" + employeeBase.getId())
                         .contentType(APPLICATION_JSON_UTF8).content(payload))
                 .andExpect(status().isOk());
 
@@ -64,7 +65,6 @@ class EmployeeCreationSuccessCaseTests {
         assertThat(employee.getUser().getPassword()).isEqualTo("password");
         assertThat(employee.getEmployeeType()).isEqualTo(EmployeeType.DEVELOPER);
         assertThat(employee.getPosition().getId()).isEqualTo(position.getId());
-
     }
 
 }

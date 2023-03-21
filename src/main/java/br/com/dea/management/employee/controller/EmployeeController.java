@@ -29,13 +29,15 @@ public class EmployeeController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
             @ApiResponse(responseCode = "400", description = "Payload not valid"),
-            @ApiResponse(responseCode = "500", description = "Error creating employee")
+            @ApiResponse(responseCode = "500", description = "Error creating employee"),
     })
-    @PostMapping(value = "/employee")
+    @PostMapping("/employee")
     public void createEmployee(@Valid @RequestBody CreateEmployeeRequestDto createEmployeeRequestDto) {
-        Employee employee = this.employeeService.createEmployee(createEmployeeRequestDto);
+        log.info(String.format("Creating Employee : Payload : %s", createEmployeeRequestDto));
 
-        log.info(String.format("Employee created successfully : id %s", employee.getId()));
+        Employee employee = employeeService.createEmployee(createEmployeeRequestDto);
+
+        log.info(String.format("Employee created successfully : id : %s", employee.getId()));
     }
 
     @Operation(summary = "Update a Employee")
@@ -43,13 +45,15 @@ public class EmployeeController {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
             @ApiResponse(responseCode = "400", description = "Payload not valid"),
             @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "500", description = "Error creating employee")
+            @ApiResponse(responseCode = "500", description = "Error updating employee"),
     })
     @PutMapping("/employee/{employeeId}")
-    public void updateStudent(@PathVariable Long employeeId, @Valid @RequestBody UpdateEmployeeRequestDto updateEmployeeRequestDto) {
+    public void updateEmployee(@PathVariable Long employeeId, @Valid @RequestBody UpdateEmployeeRequestDto updateEmployeeRequestDto) {
+        log.info(String.format("Updating Employee : Payload : %s", updateEmployeeRequestDto));
+
         Employee employee = employeeService.updateEmployee(employeeId, updateEmployeeRequestDto);
 
-        log.info(String.format("Employee updated successfully : id %s", employee.getId()));
+        log.info(String.format("Employee updated successfully : id : %s", employee.getId()));
     }
 
     @Operation(summary = "Load the list of employees paginated.")
