@@ -1,6 +1,11 @@
-package br.com.dea.management.employee;
+package br.com.dea.management.academyclass.creation;
 
+import br.com.dea.management.academyclass.AcademyTestUtils;
+import br.com.dea.management.academyclass.ClassType;
+import br.com.dea.management.academyclass.domain.AcademyClass;
 import br.com.dea.management.academyclass.repository.AcademyClassRepository;
+import br.com.dea.management.employee.EmployeeTestUtils;
+import br.com.dea.management.employee.EmployeeType;
 import br.com.dea.management.employee.domain.Employee;
 import br.com.dea.management.employee.repository.EmployeeRepository;
 import br.com.dea.management.position.domain.Position;
@@ -24,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class EmployeeCreationSuccessCaseTests {
+class AcademyClassCreationSuccessCaseTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,36 +43,36 @@ class EmployeeCreationSuccessCaseTests {
     @Autowired
     private EmployeeTestUtils employeeTestUtils;
 
+    @Autowired
+    private AcademyTestUtils academyTestUtils;
+
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
     @Test
-    void whenRequestingEmployeeCreationWithAValidPayload_thenCreateAEmployeeSuccessfully() throws Exception {
+    void whenRequestingAcademyClassCreationWithAValidPayload_thenCreateAAcademyClassSuccessfully() throws Exception {
         this.academyClassRepository.deleteAll();
         this.employeeRepository.deleteAll();
-        Position position = this.employeeTestUtils.createFakePosition("Dev", "Pleno");
+        this.employeeTestUtils.createFakeEmployees(1);
+        Employee employee = this.employeeRepository.findAll().get(0);
 
-        String payload = "{" +
-                "\"name\": \"name\"," +
-                "\"email\": \"email@email.com\"," +
-                "\"linkedin\": \"linkedin\"," +
-                "\"employeeType\": \"DEVELOPER\"," +
-                "\"password\": \"password\"," +
-                "\"position\": " + position.getId() +
+        String payload = "{\n" +
+                "  \"startDate\": \"2023-03-28\",\n" +
+                "  \"endDate\": \"2023-03-29\",\n" +
+                "  \"classType\": \"DEVELOPER\",\n" +
+                "  \"instructorId\": \n" + employee.getId() +
                 "}";
-        mockMvc.perform(post("/employee")
+
+        mockMvc.perform(post("/academy-class")
                         .contentType(APPLICATION_JSON_UTF8).content(payload))
                 .andExpect(status().isOk());
 
-        Employee employee = this.employeeRepository.findAll().get(0);
+        AcademyClass academyClass = this.academyClassRepository.findAll().get(0);
 
-        assertThat(employee.getUser().getName()).isEqualTo("name");
-        assertThat(employee.getUser().getEmail()).isEqualTo("email@email.com");
-        assertThat(employee.getUser().getLinkedin()).isEqualTo("linkedin");
-        assertThat(employee.getUser().getPassword()).isEqualTo("password");
-        assertThat(employee.getEmployeeType()).isEqualTo(EmployeeType.DEVELOPER);
-        assertThat(employee.getPosition().getId()).isEqualTo(position.getId());
-
+        assertThat(academyClass.getInstructor().getId()).isEqualTo(employee.getId());
+        assertThat(academyClass.getStartDate()).isEqualTo("2023-03-28");
+        assertThat(academyClass.getEndDate()).isEqualTo("2023-03-29");
+        assertThat(academyClass.getClassType()).isEqualTo(ClassType.DEVELOPER);
     }
 
 }
